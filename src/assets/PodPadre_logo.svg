@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800">
+  <defs>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#c9962b"/>
+      <stop offset="100%" stop-color="#e6c15a"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="800" fill="white"/>
+
+  <path d="M200 520 L400 300 L600 520 Z" fill="#7b1020"/>
+  <circle cx="400" cy="280" r="120" fill="#ffffff" stroke="url(#gold)" stroke-width="8"/>
+  <rect x="365" y="260" width="70" height="180" rx="35" fill="url(#gold)" stroke="#7b1020" stroke-width="5"/>
+
+  <g stroke="#7b1020" stroke-width="5">
+    <line x1="380" y1="290" x2="420" y2="290"/>
+    <line x1="380" y1="320" x2="420" y2="320"/>
+    <line x1="380" y1="350" x2="420" y2="350"/>
+    <line x1="380" y1="380" x2="420" y2="380"/>
+  </g>
+
+  <path d="M250 500 Q400 430 550 500" fill="#fff" stroke="url(#gold)" stroke-width="8"/>
+  <path d="M250 500 Q400 470 550 500" fill="none" stroke="url(#gold)" stroke-width="3"/>
+
+  <text x="400" y="640" text-anchor="middle"
+        font-size="92" font-family="Georgia"
+        fill="#7b1020">Pod<tspan fill="url(#gold)">Padre</tspan></text>
+</svg>

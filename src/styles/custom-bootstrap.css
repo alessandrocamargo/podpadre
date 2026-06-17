@@ -1,0 +1,99 @@
+
+
+:root {
+  --gold: #C5A55A;
+  --gold-light: #DBC88F;
+  --pastel-cream: #FDFBF7;
+  --pastel-rose: #F4E9E1;
+  --pastel-sage: #C3D2C2;
+  --text-dark: #3A3226;
+  --text-medium: #6B5D50;
+}
+
+body {
+  background-color: var(--pastel-cream);
+  font-family: 'Inter', sans-serif;
+  color: var(--text-dark);
+}
+
+/* Títulos */
+h1, h2, h3, h4, .card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  color: var(--gold);
+}
+
+/* Header e Footer personalizados */
+.navbar-custom {
+  background: linear-gradient(135deg, var(--pastel-rose), #FDF8F2) !important;
+  /* border-bottom: 2px solid var(--gold); */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.navbar-custom .navbar-brand,
+.navbar-custom .nav-link {
+  color: var(--text-dark) !important;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.navbar-custom .nav-link:hover {
+  color: var(--gold) !important;
+}
+
+.footer-custom {
+  background: linear-gradient(135deg, #F4E9E1, #FDFBF7) !important;
+  margin-top: auto;
+  color: var(--text-medium);
+}
+
+/* Cards */
+.card-custom {
+  background-color: #FFFCF5;
+  border: 1px solid var(--pastel-sage);
+  border-left: 6px solid var(--gold);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-custom:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(197, 165, 90, 0.15);
+}
+
+/* Botão dourado */
+.btn-gold {
+  background-color: var(--gold);
+  border-color: var(--gold);
+  color: white;
+  font-family: 'Inter', sans-serif;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-gold:hover {
+  background-color: var(--gold-light);
+  border-color: var(--gold-light);
+  color: white;
+}
+
+.btn-outline-gold {
+  color: var(--gold);
+  border-color: var(--gold);
+  background-color: transparent;
+}
+
+.btn-outline-gold:hover {
+  background-color: var(--gold);
+  color: white;
+}
+
+/* Link padrão */
+a {
+  color: var(--gold);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--gold-light);
+}
