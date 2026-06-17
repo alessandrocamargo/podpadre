@@ -1,73 +1,52 @@
-# React + TypeScript + Vite
+# 🎙️ PodPadre
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**PodPadre** é um portal elegante e acolhedor que reúne curiosidades sobre o **Catolicismo Apostólico Romano**.  
+Desenvolvido com React, TypeScript e Bootstrap, o site oferece uma experiência suave em tons pastéis e dourados — ideal para quem deseja mergulhar na riqueza da fé católica.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## ✨ Funcionalidades
 
-## React Compiler
+- 📜 Listagem de curiosidades católicas com resumo e data.
+- 🔍 Página de detalhes com conteúdo completo.
+- 🧭 Navegação SPA (Single Page Application) com React Router.
+- 🎨 Design responsivo e personalizado em tons pastéis e dourado.
+- 🖼️ Logo própria (SVG ou PNG).
+- 📱 Layout adaptável (mobile-first).
+- 🦶 Footer fixo ao final da página.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🛠️ Tecnologias
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+| Tecnologia          | Uso                        |
+|---------------------|----------------------------|
+| React 18+           | Biblioteca UI              |
+| TypeScript          | Tipagem estática           |
+| Vite                | Build tool e dev server    |
+| React Router v6     | Roteamento                 |
+| Bootstrap 5         | Sistema de grid e componentes base |
+| React-Bootstrap     | Integração Bootstrap com React |
+| CSS Modules (opcional) | Estilização adicional   |
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🚀 Como executar o projeto
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Pré-requisitos
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Node.js (v16 ou superior)
+- npm (v8 ou superior)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Instalação
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+```bash
+# Clone o repositório
+git clone https://github.com/seu-usuario/podpadre.git
+cd podpadre
+
+# Instale as dependências
+npm install
+
+# Inicie o servidor de desenvolvimento
+npm run dev
