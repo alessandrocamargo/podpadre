@@ -1,6 +1,6 @@
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import logo from "../assets/logo.png";
+import logo from "../assets/PodPadre_logo.svg";
 
 const menuItems = [
   { label: "Início", to: "/" },
