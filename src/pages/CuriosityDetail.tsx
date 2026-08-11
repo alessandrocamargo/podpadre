@@ -10,14 +10,14 @@ const CuriosityDetail: React.FC = () => {
     return (
       <Container className="py-5 text-center">
         <h2>Curiosidade não encontrada</h2>
-        <Link to="/" className="btn btn-gold mt-3">← Voltar para Home</Link>
+        <Link to="/curiosidades" className="btn btn-gold mt-3">← Voltar para curiosidades</Link>
       </Container>
     );
   }
 
   return (
     <Container className="py-5" style={{ maxWidth: '720px' }}>
-      <Link to="/" className="text-gold mb-3 d-inline-block">
+      <Link to="/curiosidades" className="text-gold mb-3 d-inline-block">
         ← Todas as curiosidades
       </Link>
       <article>

@@ -2,6 +2,13 @@ import { Navbar, Container, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
 
+const menuItems = [
+  { label: "Início", to: "/" },
+  { label: "Curiosidades", to: "/curiosidades" },
+  { label: "História", to: "/historia" },
+  { label: "Sobre", to: "/sobre" },
+];
+
 const Header: React.FC = () => {
   return (
     <Navbar expand="lg" className="navbar-custom py-3 shadow-sm">
@@ -9,46 +16,36 @@ const Header: React.FC = () => {
         <Navbar.Brand
           as={Link}
           to="/"
-          className="d-flex align-items-center gap-2"
+          className="d-flex align-items-center gap-3 brand-custom"
         >
           <img
             src={logo}
             alt="PodPadre Logo"
-            width="70"
-            height="70"
-            style={{ objectFit: "contain" }}
+            width="64"
+            height="64"
+            className="brand-logo"
           />
 
-          <div>
-            <h1
-              className="m-0 fw-bold"
-              style={{
-                fontSize: "1.8rem",
-                color: "var(--text-dark)",
-                lineHeight: "1",
-              }}
-            >
-              PodPadre
-            </h1>
-
-            <small
-              style={{
-                color: "#8a7b6a",
-                letterSpacing: "1px",
-              }}
-            >
-              Fé • História • Curiosidades
-            </small>
+          <div className="brand-copy">
+            <div className="brand-title">PodPadre</div>
+            <small className="brand-subtitle">Fé • História • Curiosidades</small>
           </div>
         </Navbar.Brand>
 
-        <Navbar.Toggle />
+        <Navbar.Toggle aria-controls="main-navbar-nav" className="navbar-toggle-custom" />
 
-        <Navbar.Collapse className="justify-content-end">
-          <Nav>
-            <Nav.Link as={Link} to="/" className="nav-item-custom">
-              Home
-            </Nav.Link>
+        <Navbar.Collapse id="main-navbar-nav" className="justify-content-end">
+          <Nav className="align-items-lg-center gap-lg-2 nav-menu">
+            {menuItems.map((item) => (
+              <Nav.Link
+                key={item.label}
+                as={Link}
+                to={item.to}
+                className="nav-item-custom"
+              >
+                {item.label}
+              </Nav.Link>
+            ))}
           </Nav>
         </Navbar.Collapse>
       </Container>
