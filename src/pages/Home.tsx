@@ -1,10 +1,14 @@
 import { Container, Row, Col, Carousel } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import curiosities from '../data/curiosities';
 import CuriosityCard from '../components/CuriosityCard';
+import { getTodayLiturgy } from '../services/liturgyService';
 import carrosel1 from '../assets/carrosel/carrosel1.png';
 import carrosel2 from '../assets/carrosel/carrosel2.png';
 import carrosel3 from '../assets/carrosel/carrosel3.png';
 import carrosel4 from '../assets/carrosel/carrosel4.png';
+import '../styles/home.css';
 
 const carouselItems = [
   {
@@ -36,33 +40,64 @@ const churches = [
     name: 'Catedral Nossa Senhora da Conceição',
     district: 'Campo Limpo Paulista',
     mapQuery: 'Catedral Nossa Senhora da Conceição Campo Limpo Paulista',
-    website: 'Site oficial não informado',
-    celebrations: 'Informações sobre celebrações ainda não cadastradas.',
+    website: '',
+    celebrations: '',
   },
   {
     name: 'Paróquia São João Paulo II',
     district: 'Vila das Belezas',
     mapQuery: 'Paróquia São João Paulo II Campo Limpo Paulista',
-    website: 'Site oficial não informado',
-    celebrations: 'Horários e celebrações sem informação disponível no momento.',
+    website: '',
+    celebrations: '',
   },
   {
     name: 'Paróquia Nossa Senhora da Esperança',
     district: 'Jardim Santo André',
     mapQuery: 'Paróquia Nossa Senhora da Esperança Campo Limpo Paulista',
-    website: 'Site oficial não informado',
-    celebrations: 'Dados de celebrações ainda não disponíveis.',
+    website: '',
+    celebrations: '',
   },
   {
     name: 'Paróquia São Francisco de Assis',
     district: 'Jardim das Flores',
     mapQuery: 'Paróquia São Francisco de Assis Campo Limpo Paulista',
-    website: 'Site oficial não informado',
-    celebrations: 'Informações de liturgia e horários não cadastradas.',
+    website: '',
+    celebrations: '',
   },
 ];
 
 const Home: React.FC = () => {
+  const [liturgy, setLiturgy] = useState<any>({
+    date: '',
+    title: '',
+    reading1: '',
+    reading2: '',
+    gospel: '',
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadLiturgy = async () => {
+      try {
+        const data = await getTodayLiturgy();
+        setLiturgy(data);
+      } catch (error) {
+        console.error('Erro ao carregar liturgia na home:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadLiturgy();
+  }, []);
+
+  // Função para truncar texto
+  const truncateText = (text: string, maxLength: number = 200) => {
+    if (!text) return '';
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength).trim() + '...';
+  };
+
   return (
     <Container className="py-5">
       <section className="home-hero mb-5" id="inicio">
@@ -129,9 +164,13 @@ const Home: React.FC = () => {
                   <span className="church-badge">Paróquia</span>
                   <strong>{church.name}</strong>
                   <span>{church.district}</span>
-                  <div className="church-meta">
-                    <span><strong>Site:</strong> {church.website}</span>
-                    <span><strong>Celebrações:</strong> {church.celebrations}</span>
+                  <div className="church-details">
+                    {church.website && (
+                      <span className="church-detail">🌐 {church.website}</span>
+                    )}
+                    {church.celebrations && (
+                      <span className="church-detail">🕐 {church.celebrations}</span>
+                    )}
                   </div>
                   <a
                     href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(church.mapQuery)}`}
@@ -139,7 +178,7 @@ const Home: React.FC = () => {
                     rel="noreferrer"
                     className="church-link"
                   >
-                    Ver no mapa
+                    📍 Ver no mapa
                   </a>
                 </div>
               ))}
@@ -176,6 +215,68 @@ const Home: React.FC = () => {
             </Col>
           ))}
         </Row>
+
+        <div className="text-center mt-4 curiosities-more">
+          <Link to="/curiosidades" className="btn btn-outline-gold btn-lg px-4">
+            Ver todas as curiosidades →
+          </Link>
+        </div>
+      </section>
+
+      <section className="home-daily-liturgy mb-5">
+        <div className="section-heading mb-4">
+          <p className="eyebrow mb-2">Liturgia Diária</p>
+          <h2 className="mb-3">Palavra Sagrada de Hoje</h2>
+        </div>
+
+        {loading ? (
+          <div className="text-center py-5">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Carregando...</span>
+            </div>
+            <p className="text-muted mt-3">Carregando liturgia...</p>
+          </div>
+        ) : (
+          <Row className="g-4">
+            <Col lg={12}>
+              <div className="liturgy-preview-card">
+                <div className="liturgy-preview-header">
+                  <h3>{liturgy.title}</h3>
+                  <p className="text-muted mb-0">{liturgy.date}</p>
+                </div>
+
+                <div className="liturgy-sections">
+                  {liturgy.reading1 && (
+                    <div className="liturgy-section">
+                      <h5>📖 Primeira Leitura</h5>
+                      <p>{truncateText(liturgy.reading1, 250)}</p>
+                    </div>
+                  )}
+
+                  {liturgy.reading2 && (
+                    <div className="liturgy-section">
+                      <h5>📖 Segunda Leitura</h5>
+                      <p>{truncateText(liturgy.reading2, 250)}</p>
+                    </div>
+                  )}
+
+                  {liturgy.gospel && (
+                    <div className="liturgy-section">
+                      <h5>✨ Evangelho</h5>
+                      <p>{truncateText(liturgy.gospel, 250)}</p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="liturgy-preview-footer">
+                  <Link to="/liturgia" className="btn btn-primary btn-lg">
+                    Leia a Liturgia Completa →
+                  </Link>
+                </div>
+              </div>
+            </Col>
+          </Row>
+        )}
       </section>
     </Container>
   );

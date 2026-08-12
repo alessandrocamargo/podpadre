@@ -4,6 +4,7 @@ import logo from "../assets/PodPadre_logo.svg";
 
 const menuItems = [
   { label: "Início", to: "/" },
+  { label: "Liturgia", to: "/liturgia" },
   { label: "Curiosidades", to: "/curiosidades" },
   { label: "História", to: "/historia" },
   { label: "Sobre", to: "/sobre" },

@@ -6,6 +6,7 @@ import CuriosityDetail from './pages/CuriosityDetail';
 import Historia from './pages/Historia';
 import Sobre from './pages/Sobre';
 import Curiosidades from './pages/Curiosidades';
+import LiturgiaDiaria from './pages/LiturgiaDiaria';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/curiosidades" element={<Curiosidades />} />
             <Route path="/historia" element={<Historia />} />
             <Route path="/sobre" element={<Sobre />} />
+            <Route path="/liturgia" element={<LiturgiaDiaria />} />
             <Route path="/curiosidade/:id" element={<CuriosityDetail />} />
           </Routes>
         </main>

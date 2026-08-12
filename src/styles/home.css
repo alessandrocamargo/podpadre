@@ -1,0 +1,214 @@
+/* Seção de Liturgia Diária na Home */
+.home-daily-liturgy {
+  padding: 0;
+  margin: 2rem 0;
+}
+
+.liturgy-preview-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.liturgy-preview-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.liturgy-preview-header {
+  border-bottom: 2px solid #6c757d;
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.liturgy-preview-header h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.liturgy-preview-header p {
+  font-size: 0.95rem;
+  color: #7f8c8d;
+}
+
+.liturgy-sections {
+  margin-bottom: 2rem;
+}
+
+.liturgy-section {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.liturgy-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.liturgy-section h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #34495e;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.liturgy-section p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #555;
+  margin: 0;
+}
+
+.liturgy-preview-footer {
+  text-align: center;
+  padding-top: 1rem;
+}
+
+.liturgy-preview-footer .btn {
+  background-color: #6c5ce7;
+  border-color: #6c5ce7;
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.liturgy-preview-footer .btn:hover {
+  background-color: #5f4ed1;
+  border-color: #5f4ed1;
+  transform: translateX(4px);
+}
+
+/* Sidebar com informações */
+.liturgy-sidebar {
+  height: 100%;
+}
+
+.liturgy-info-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #6c5ce7;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.liturgy-info-card h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.liturgy-info-card p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #555;
+  flex-grow: 1;
+}
+
+.liturgy-info-card hr {
+  margin: 1rem 0;
+  border-color: #e0e0e0;
+}
+
+/* Responsivo */
+@media (max-width: 992px) {
+  .home-daily-liturgy {
+    padding: 2rem 1.5rem;
+  }
+
+  .liturgy-preview-card {
+    padding: 1.5rem;
+  }
+
+  .liturgy-preview-header h3 {
+    font-size: 1.3rem;
+  }
+
+  .liturgy-section h5 {
+    font-size: 1rem;
+  }
+
+  .liturgy-section p {
+    font-size: 0.9rem;
+  }
+
+  .liturgy-info-card {
+    margin-top: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .home-daily-liturgy {
+    padding: 1.5rem 1rem;
+  }
+
+  .liturgy-preview-card {
+    padding: 1rem;
+  }
+
+  .liturgy-preview-header h3 {
+    font-size: 1.1rem;
+  }
+
+  .liturgy-section h5 {
+    font-size: 0.95rem;
+  }
+
+  .liturgy-section p {
+    font-size: 0.85rem;
+  }
+
+  .liturgy-preview-footer .btn {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Spinner customizado */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  border-width: 0.3em;
+}
+
+/* CTA do Hero */
+.hero-cta .btn {
+  border-radius: 999px;
+  font-weight: 600;
+  box-shadow: 0 6px 18px rgba(197, 165, 90, 0.25);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.hero-cta .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(197, 165, 90, 0.35);
+}
+
+.hero-cta .btn-outline-gold {
+  box-shadow: none;
+}
+
+/* Botão "ver todas" das curiosidades */
+.curiosities-more .btn {
+  border-radius: 999px;
+  font-weight: 600;
+  padding: 0.7rem 2rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.curiosities-more .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(197, 165, 90, 0.25);
+}

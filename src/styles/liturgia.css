@@ -1,0 +1,160 @@
+/* Estilos para Página de Liturgia Diária */
+
+.liturgia-container {
+  min-height: 70vh;
+}
+
+.liturgia-header {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.liturgia-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 3.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.5px;
+}
+
+.liturgia-subtitle {
+  font-family: "Inter", sans-serif;
+  font-size: 1.1rem;
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+.liturgia-card {
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  transition: all 0.3s ease;
+}
+
+.liturgia-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1) !important;
+}
+
+.liturgia-card-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2rem;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.liturgia-card-subtitle {
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  color: #7f8c8d;
+}
+
+.liturgia-section {
+  padding: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-left: 4px solid #8b7355;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.liturgia-section:hover {
+  background-color: rgba(255, 255, 255, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.liturgia-section-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.3rem;
+  color: #8b7355;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.liturgia-text {
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #333;
+  margin: 0;
+}
+
+.liturgia-footer {
+  padding-top: 1rem;
+  text-align: right;
+}
+
+.liturgia-info {
+  border-left: 4px solid #0d6efd !important;
+  background-color: #e7f3ff !important;
+  color: #0c5de4 !important;
+}
+
+.refresh-btn {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.refresh-btn:hover:not(:disabled) {
+  transform: rotate(180deg);
+}
+
+.refresh-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .liturgia-title {
+    font-size: 2.5rem;
+  }
+
+  .liturgia-card-title {
+    font-size: 1.5rem;
+  }
+
+  .liturgia-card {
+    padding: 1.5rem !important;
+  }
+
+  .liturgia-section {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .liturgia-footer {
+    text-align: center;
+  }
+
+  .d-flex {
+    flex-direction: column !important;
+  }
+
+  .align-items-start {
+    align-items: center !important;
+  }
+
+  .refresh-btn {
+    width: 100%;
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .liturgia-title {
+    font-size: 2rem;
+  }
+
+  .liturgia-card-title {
+    font-size: 1.25rem;
+  }
+
+  .liturgia-section-title {
+    font-size: 1.1rem;
+  }
+
+  .liturgia-text {
+    font-size: 0.95rem;
+  }
+}

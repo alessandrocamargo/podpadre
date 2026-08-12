@@ -1,0 +1,135 @@
+================================================================================
+  🙏 PODPADRE - GUIA DE EXECUÇÃO E TESTES RÁPIDO
+================================================================================
+
+┌─ OPÇÃO 1: INICIAR TUDO (MAIS SIMPLES) ──────────────────────────────────────┐
+│                                                                               │
+│  Windows:  Clique duplo em → start.bat                                       │
+│                                                                               │
+│  Terminal: npm run dev:all                                                   │
+│                                                                               │
+│  Resultado esperado:                                                         │
+│  ✅ Servidor rodando em http://localhost:3001                               │
+│  ✅ React rodando em http://localhost:5173                                  │
+│                                                                               │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─ OPÇÃO 2: INICIAR SEPARADAMENTE (2 TERMINAIS) ──────────────────────────────┐
+│                                                                               │
+│  Terminal 1:                                                                  │
+│  npm run server                                                              │
+│  Aparecerá: 🙏 Servidor de Liturgia rodando em http://localhost:3001         │
+│                                                                               │
+│  Terminal 2:                                                                  │
+│  npm run dev                                                                 │
+│  Aparecerá: ➜  Local:   http://localhost:5173/                              │
+│                                                                               │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─ ACESSAR NO NAVEGADOR ──────────────────────────────────────────────────────┐
+│                                                                               │
+│  Home:         http://localhost:5173                                         │
+│  Liturgia:     http://localhost:5173/liturgia                                │
+│  Curiosidades: http://localhost:5173/curiosidades                            │
+│  História:     http://localhost:5173/historia                                │
+│  Sobre:        http://localhost:5173/sobre                                   │
+│                                                                               │
+│  API Liturgia: http://localhost:3001/api/liturgia                            │
+│  Health Check: http://localhost:3001/api/health                              │
+│                                                                               │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─ TESTAR TUDO AUTOMATICAMENTE ───────────────────────────────────────────────┐
+│                                                                               │
+│  Windows:  Clique duplo em → test.bat                                        │
+│                                                                               │
+│  Terminal: npm test                                                          │
+│                                                                               │
+│  ✅ Isso valida:                                                             │
+│     • Servidor rodando na porta 3001                                         │
+│     • React rodando na porta 5173                                            │
+│     • API respondendo corretamente                                           │
+│     • Scraping da CNBB funcionando                                           │
+│                                                                               │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─ CHECKLIST DE TESTES MANUAIS ───────────────────────────────────────────────┐
+│                                                                               │
+│  [ ] Abrir http://localhost:5173                                             │
+│  [ ] Página Home carrega                                                      │
+│  [ ] Menu está visível                                                        │
+│  [ ] Clicar em "Liturgia" mostra dados                                        │
+│  [ ] Mostra: Data, Primeira Leitura, Segunda Leitura, Evangelho             │
+│  [ ] Botão "Atualizar" funciona                                              │
+│  [ ] Clicar em "Curiosidades" mostra cards                                    │
+│  [ ] Clicar em um card abre detalhes                                          │
+│  [ ] Redimensionar janela: layout se adapta                                   │
+│  [ ] Abrir F12 (Console): Sem erros vermelhos                                │
+│  [ ] Rodar testes: npm test (todos devem passar)                             │
+│                                                                               │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─ COMANDOS ÚTEIS ────────────────────────────────────────────────────────────┐
+│                                                                               │
+│  npm run dev:all      Inicia servidor + React simultaneamente               │
+│  npm run server       Inicia apenas o servidor                              │
+│  npm run dev          Inicia apenas React                                   │
+│  npm run build        Cria build para produção                              │
+│  npm test             Roda testes automáticos                               │
+│  npm install          Instala todas as dependências                         │
+│  npm run lint         Verifica código (ESLint)                              │
+│                                                                               │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─ PARAR OS SERVIÇOS ─────────────────────────────────────────────────────────┐
+│                                                                               │
+│  Pressione: Ctrl + C (no terminal)                                           │
+│                                                                               │
+│  Isso para ambos os serviços (se estão juntos) ou apenas o que estiver       │
+│  rodando naquele terminal.                                                   │
+│                                                                               │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─ PROBLEMAS COMUNS ──────────────────────────────────────────────────────────┐
+│                                                                               │
+│  ❌ "Porta 3001 já está em uso"                                              │
+│     → Feche outro programa usando essa porta                                 │
+│     → Ou: PORT=3002 npm run server                                           │
+│                                                                               │
+│  ❌ "Cannot find module"                                                     │
+│     → Execute: npm install                                                   │
+│                                                                               │
+│  ❌ Página em branco                                                          │
+│     → Pressione: Ctrl + Shift + R (limpar cache)                             │
+│                                                                               │
+│  ❌ "Liturgia não disponível"                                                │
+│     → Verifique se servidor está rodando: http://localhost:3001/api/health  │
+│     → Verifique conexão de internet                                          │
+│     → Verifique se site da CNBB está online                                  │
+│                                                                               │
+│  ❌ Erro no console (F12)                                                    │
+│     → Consulte: GUIA_EXECUCAO.md                                             │
+│                                                                               │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─ PROXIMAS ETAPAS ───────────────────────────────────────────────────────────┐
+│                                                                               │
+│  ✨ Sistema funcionando?                                                     │
+│                                                                               │
+│     Sim → Parabéns! Sistema está pronto para uso 🎉                         │
+│                                                                               │
+│     Não → Consulte GUIA_EXECUCAO.md para mais detalhes                      │
+│                                                                               │
+│  📚 Documentação disponível:                                                 │
+│     • INICIO_RAPIDO.md        - Guia de 3 passos                             │
+│     • GUIA_EXECUCAO.md        - Documentação completa                        │
+│     • README_SISTEMA.md       - Detalhes técnicos                            │
+│     • server/README.md        - Detalhes do servidor                         │
+│     • URLS_REFERENCIA.md      - Links rápidos                                │
+│                                                                               │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+================================================================================
+  Desenvolvido com ❤️ para a comunidade católica
+  PodPadre - Portal de Liturgia e Curiosidades
+================================================================================
