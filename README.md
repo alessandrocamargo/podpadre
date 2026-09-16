@@ -42,7 +42,7 @@ Desenvolvido com React, TypeScript e Bootstrap, o site oferece uma experiência 
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/podpadre.git
+git clone https://github.com/alessandrocamargo/podpadre.git
 cd podpadre
 
 # Instale as dependências
