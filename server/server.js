@@ -8,7 +8,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Middleware
-app.use(cors());
+app.disable('x-powered-by');
+app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:5173' }));
 app.use(express.json());
 
 // Rota raiz (diagnostico)
@@ -28,7 +29,7 @@ app.get("/", (req, res) => {
 app.get("/api/liturgia", async (req, res) => {
   try {
     console.log("📖 Buscando liturgia...");
-    const liturgy = await getCachedOrFreshLiturgy();
+    const liturgy = await getCachedOrFreshLiturgy({ refresh: req.query.refresh === "1" });
     console.log("✅ Liturgia obtida com sucesso");
     res.json({
       success: true,
@@ -36,10 +37,9 @@ app.get("/api/liturgia", async (req, res) => {
     });
   } catch (error) {
     console.error("❌ Erro na rota /api/liturgia:", error);
-    res.status(500).json({
+    res.status(503).json({
       success: false,
       error: "Erro ao buscar liturgia",
-      message: error.message,
     });
   }
 });
@@ -48,6 +48,7 @@ app.get("/api/liturgia", async (req, res) => {
 app.get("/api/exemplo", (req, res) => {
   res.json({
     success: true,
+    demo: true,
     data: exampleLiturgyData,
   });
 });

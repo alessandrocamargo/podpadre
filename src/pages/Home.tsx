@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import curiosities from '../data/curiosities';
 import CuriosityCard from '../components/CuriosityCard';
+import type { LiturgyData } from '../types/Liturgy';
 import { getTodayLiturgy } from '../services/liturgyService';
-import carrosel1 from '../assets/carrosel/carrosel1.png';
-import carrosel2 from '../assets/carrosel/carrosel2.png';
-import carrosel3 from '../assets/carrosel/carrosel3.png';
-import carrosel4 from '../assets/carrosel/carrosel4.png';
+import carrosel1 from '../assets/carrosel/carrosel1.jpg';
+import carrosel2 from '../assets/carrosel/carrosel2.jpg';
+import carrosel3 from '../assets/carrosel/carrosel3.jpg';
+import carrosel4 from '../assets/carrosel/carrosel4.jpg';
 import '../styles/home.css';
 
 const carouselItems = [
@@ -67,13 +68,8 @@ const churches = [
 ];
 
 const Home: React.FC = () => {
-  const [liturgy, setLiturgy] = useState<any>({
-    date: '',
-    title: '',
-    reading1: '',
-    reading2: '',
-    gospel: '',
-  });
+  const [liturgy, setLiturgy] = useState<LiturgyData | null>(null);
+  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -82,6 +78,7 @@ const Home: React.FC = () => {
         const data = await getTodayLiturgy();
         setLiturgy(data);
       } catch (error) {
+        setError(true);
         console.error('Erro ao carregar liturgia na home:', error);
       } finally {
         setLoading(false);
@@ -125,7 +122,7 @@ const Home: React.FC = () => {
               </p>
               <div className="hero-metrics">
                 <div>
-                  <strong>4</strong>
+                  <strong>{curiosities.length}</strong>
                   <span>Curiosidades</span>
                 </div>
                 <div>
@@ -141,7 +138,7 @@ const Home: React.FC = () => {
       <Carousel fade className="home-carousel mb-5" interval={4500}>
         {carouselItems.map((item) => (
           <Carousel.Item key={item.title}>
-            <img className="d-block w-100 carousel-image" src={item.image} alt={item.title} />
+            <img className="d-block w-100 carousel-image" src={item.image} alt={item.title} loading={item === carouselItems[0] ? "eager" : "lazy"} decoding="async" />
             <Carousel.Caption className="carousel-caption-custom">
               <h3>{item.title}</h3>
               <p>{item.text}</p>
@@ -152,8 +149,8 @@ const Home: React.FC = () => {
 
       <section className="churches-map-section mb-5">
         <div className="section-heading mb-4">
-          <p className="eyebrow mb-2">Arquidiocese</p>
-          <h2 className="mb-0">Igrejas da Arquidiocese de Campo Limpo</h2>
+          <p className="eyebrow mb-2">Comunidades</p>
+          <h2 className="mb-0">Igrejas em Campo Limpo Paulista</h2>
         </div>
 
         <Row className="g-4 align-items-stretch">
@@ -188,8 +185,8 @@ const Home: React.FC = () => {
           <Col lg={7}>
             <div className="map-panel">
               <iframe
-                title="Mapa da Arquidiocese de Campo Limpo"
-                src={`https://www.google.com/maps?q=${encodeURIComponent('Arquidiocese de Campo Limpo São Paulo Capital')}&output=embed`}
+                title="Mapa de igrejas em Campo Limpo Paulista"
+                src={`https://www.google.com/maps?q=${encodeURIComponent('igrejas em Campo Limpo Paulista')}&output=embed`}
                 className="map-frame"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
@@ -236,6 +233,8 @@ const Home: React.FC = () => {
             </div>
             <p className="text-muted mt-3">Carregando liturgia...</p>
           </div>
+        ) : error || !liturgy ? (
+          <div role="alert" className="alert alert-warning">A liturgia está indisponível no momento. <Link to="/liturgia">Tentar novamente</Link></div>
         ) : (
           <Row className="g-4">
             <Col lg={12}>

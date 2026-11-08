@@ -1,16 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Container, Card, Spinner, Button, Alert } from "react-bootstrap";
-import { getTodayLiturgy, refreshLiturgy } from "../services/liturgyService";
+import { getTodayLiturgy, refreshLiturgy, getLiturgyDate } from "../services/liturgyService";
 import "../styles/liturgia.css";
 
-interface LiturgyData {
-  date: string;
-  title: string;
-  reading1?: string;
-  reading2?: string;
-  gospel?: string;
-  liturgicalDay?: string;
-}
+import type { LiturgyData } from '../types/Liturgy';
 
 const LiturgiaDiaria: React.FC = () => {
   const [liturgy, setLiturgy] = useState<LiturgyData | null>(null);
@@ -18,64 +11,35 @@ const LiturgiaDiaria: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
 
-  // Carrega a liturgia quando o componente monta
-  useEffect(() => {
-    loadLiturgy();
+  const busy = useRef(false);
+  const loadLiturgy = useCallback(async (refresh = false) => {
+    if (busy.current) return;
+    busy.current = true;
+    try {
+      const data = await (refresh ? refreshLiturgy() : getTodayLiturgy());
+      setError(null);
+      setLiturgy(data);
+      setLastUpdate(new Date(data.fetchedAt));
+    } catch {
+      setLiturgy(null);
+      setError('Não foi possível obter uma liturgia válida para hoje. Tente novamente em alguns instantes.');
+    } finally {
+      busy.current = false;
+      setLoading(false);
+    }
   }, []);
-
-  // Configura verificação diária automática
   useEffect(() => {
-    const checkDaily = setInterval(() => {
-      const now = new Date();
-      const lastUpdateDate = lastUpdate ? new Date(lastUpdate) : null;
-
-      // Se for um novo dia, atualizar
-      if (
-        !lastUpdateDate ||
-        now.getDate() !== lastUpdateDate.getDate() ||
-        now.getMonth() !== lastUpdateDate.getMonth() ||
-        now.getFullYear() !== lastUpdateDate.getFullYear()
-      ) {
-        loadLiturgy();
-      }
-    }, 60000); // Verifica a cada minuto
-
-    return () => clearInterval(checkDaily);
-  }, [lastUpdate]);
-
-  const loadLiturgy = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await getTodayLiturgy();
-      setLiturgy(data);
-      setLastUpdate(new Date());
-    } catch (err) {
-      setError(
-        "Erro ao carregar a liturgia do dia. Por favor, tente novamente."
-      );
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleRefresh = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await refreshLiturgy();
-      setLiturgy(data);
-      setLastUpdate(new Date());
-    } catch (err) {
-      setError(
-        "Erro ao atualizar a liturgia do dia. Por favor, tente novamente."
-      );
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    let date = getLiturgyDate();
+    // The initial request updates state only after awaiting the API.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void loadLiturgy();
+    const timer = setInterval(() => {
+      const today = getLiturgyDate();
+      if (today !== date) { date = today; void loadLiturgy(); }
+    }, 60000);
+    return () => clearInterval(timer);
+  }, [loadLiturgy]);
+  const handleRefresh = () => { setLoading(true); setError(null); void loadLiturgy(true); };
 
   return (
     <Container className="liturgia-container py-5">
@@ -100,7 +64,12 @@ const LiturgiaDiaria: React.FC = () => {
         </div>
       )}
 
-      {error && <Alert variant="warning">{error}</Alert>}
+      {error && <>
+        <Alert variant="warning">{error} <Button onClick={handleRefresh} disabled={loading}>Tentar novamente</Button></Alert>
+        <p>Você também pode ler no visualizador oficial das Edições CNBB:</p>
+        <iframe title="Liturgia diária — Edições CNBB" src="https://liturgiadiaria.edicoescnbb.com.br/" className="official-liturgy" loading="lazy" referrerPolicy="no-referrer" />
+        <p><a href="https://liturgiadiaria.edicoescnbb.com.br/" target="_blank" rel="noreferrer">Abrir a liturgia oficial em outra aba</a></p>
+      </>}
 
       {!loading && liturgy && (
         <>
@@ -112,7 +81,7 @@ const LiturgiaDiaria: React.FC = () => {
                     {liturgy.title}
                   </Card.Title>
                   <Card.Subtitle className="liturgia-card-subtitle">
-                    {liturgy.liturgicalDay}
+                    {new Date(`${liturgy.date}T12:00:00-03:00`).toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' })}
                   </Card.Subtitle>
                 </div>
                 <Button
@@ -135,6 +104,7 @@ const LiturgiaDiaria: React.FC = () => {
                 </div>
               )}
 
+              {liturgy.psalm && <div className="liturgia-section mb-4"><h2 className="h5">Salmo Responsorial</h2><p className="liturgia-text">{liturgy.psalm}</p></div>}
               {liturgy.reading2 && (
                 <div className="liturgia-section mb-4">
                   <h5 className="liturgia-section-title">📖 Segunda Leitura</h5>
@@ -151,6 +121,7 @@ const LiturgiaDiaria: React.FC = () => {
 
               <hr className="my-4" />
 
+              <p><a href={liturgy.url} target="_blank" rel="noreferrer">Fonte: {liturgy.source}</a></p>
               {lastUpdate && (
                 <div className="liturgia-footer text-muted small">
                   <p className="mb-0">

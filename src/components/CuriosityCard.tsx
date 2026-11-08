@@ -15,10 +15,8 @@ const CuriosityCard: React.FC<CuriosityCardProps> = ({ curiosity }) => {
         <div className="text-muted small mb-2">
           📅 {curiosity.date} &nbsp;|&nbsp; 📖 {curiosity.source}
         </div>
-        <Link to={`/curiosidade/${curiosity.id}`} className="align-self-start">
-          <button className="btn btn-sm btn-outline-gold">
+        <Link to={`/curiosidade/${curiosity.id}`} className="align-self-start btn btn-sm btn-outline-gold">
             Ler mais →
-          </button>
         </Link>
       </Card.Body>
     </Card>

@@ -158,3 +158,7 @@
     font-size: 0.95rem;
   }
 }
+
+.liturgia-text { white-space: pre-line; }
+
+.official-liturgy { width: 100%; min-height: 900px; border: 0; }

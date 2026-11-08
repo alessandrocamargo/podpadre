@@ -1,11 +1,7 @@
 // Dados de exemplo da liturgia diária
 export const exampleLiturgyData = {
-  date: new Date().toLocaleDateString("pt-BR", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  }),
+  date: "exemplo — sem data litúrgica validada",
+  demo: true,
   title: "Liturgia Diária da Igreja Católica",
   reading1:
     "Primeira Leitura (Nm 11, 25-29): Naqueles dias, o Senhor desceu na nuvem e falou com Moisés. Tirou um pouco do espírito que estava em Moisés e o pôs nos setenta anciãos. Quando o espírito pousou neles, profetizaram, mas não continuaram. Dois homens ficaram no acampamento; um se chamava Eldad, outro Medad. O espírito repouso também neles. Eram dos inscritos, mas não foram à tenda, e profetizavam no acampamento. Um rapaz correu para contar a Moisés: 'Eldad e Medad estão profetizando no acampamento!' Josué, filho de Nun, que desde a sua mocidade servia a Moisés, disse: 'Senhor meu Moisés, proíbe-os!' Respondeu-lhe Moisés: 'Você é cioso por minha causa? Tomara que todo o povo do Senhor fosse profeta e que o Senhor lhe desse o seu espírito!'",
@@ -16,20 +12,3 @@ export const exampleLiturgyData = {
   source: "CNBB - Conferência Nacional dos Bispos do Brasil",
   url: "https://www.cnbb.org.br/liturgia-diaria/",
 };
-
-// Dados de fallback simples
-export const getSimpleFallbackData = () => ({
-  date: new Date().toLocaleDateString("pt-BR", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  }),
-  title: "Liturgia Diária",
-  reading1:
-    "Aguardando dados da CNBB. Se este erro persistir, verifique sua conexão de internet.",
-  reading2: "Segunda leitura em carregamento...",
-  gospel: "Evangelho em carregamento...",
-  source: "CNBB - Conferência Nacional dos Bispos do Brasil",
-  url: "https://www.cnbb.org.br/liturgia-diaria/",
-});

@@ -21,6 +21,7 @@ function App() {
             <Route path="/sobre" element={<Sobre />} />
             <Route path="/liturgia" element={<LiturgiaDiaria />} />
             <Route path="/curiosidade/:id" element={<CuriosityDetail />} />
+            <Route path="*" element={<div className="container py-5"><h1>Página não encontrada</h1><a href="/">Voltar ao início</a></div>} />
           </Routes>
         </main>
         <Footer />
