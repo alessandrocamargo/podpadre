@@ -84,3 +84,21 @@ Os testes locais usam respostas controladas e verificam datas, intervalos, conte
 ### Publicação
 
 O frontend usa `/api` por padrão; o Vite encaminha esse caminho ao Express na porta 3001 durante o desenvolvimento. Em produção, configure o encaminhamento de `/api` para o backend ou defina `VITE_API_URL` antes do build. A hospedagem precisa permitir requisições HTTPS de saída para CNBB, API Liturgia Diária e Free Use Bible API. O backend deve ser executado além do site estático. Consulte `.env.example`.
+
+
+### Publicar na Vercel
+
+O arquivo `vercel.json` configura o build do Vite e encaminha as rotas do React para `index.html`, inclusive quando abertas diretamente ou recarregadas. Os caminhos `/api` ficam fora desse fallback.
+
+Os arquivos `api/liturgia.js` e `api/health.js` publicam funções Node.js na própria Vercel, usando os mesmos handlers do servidor local. Não é necessário executar `npm run server` em outra hospedagem para esse deploy. A função de liturgia possui duração máxima configurada em 60 segundos; o cache de memória é por instância, podendo ser reconstruído em novas execuções.
+
+Nas configurações do projeto Vercel:
+
+- **Root Directory:** a pasta que contém `package.json`, `vercel.json`, `api` e `src` (neste workspace, `podpadre`).
+- **Framework:** Vite.
+- **Build Command:** `npm run build`.
+- **Output Directory:** `dist`.
+- **Node.js:** uma versão suportada pelo Vite, como 22.12+ ou 24.
+- **VITE_API_URL:** deixe sem definir ou use `/api`; não use `localhost` em produção.
+
+Após enviar os arquivos ao GitHub, aguarde o novo deploy. Confira `/api/health` (JSON com `status: ok`), `/api/liturgia` (JSON com as leituras) e `/liturgia` aberta diretamente. As funções precisam continuar recebendo respostas válidas das fontes externas; erros retornam JSON 503, nunca o HTML do frontend.

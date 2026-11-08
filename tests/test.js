@@ -164,3 +164,54 @@ test('API bíblica indisponível preserva texto válido; sem texto não inventa 
   refs.readings[0].liturgicalText = '';
   await assert.rejects(get());
 });
+
+import http from 'node:http';
+import { createLiturgyHandler } from '../server/httpHandlers.js';
+import deployedHealth from '../api/health.js';
+import deployedLiturgy from '../api/liturgia.js';
+async function serveHandler(t, handler) {
+  const server = http.createServer(handler);
+  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  t.after(() => new Promise((resolve, reject) => server.close(error => error ? reject(error) : resolve())));
+  return `http://127.0.0.1:${server.address().port}`;
+}
+test('função da Vercel exporta handler e health responde JSON por HTTP', async t => {
+  assert.equal(typeof deployedLiturgy, 'function');
+  const url = await serveHandler(t, deployedHealth);
+  const response = await fetch(`${url}/api/health`);
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get('content-type'), /application\/json/);
+  assert.equal((await response.json()).status, 'ok');
+});
+test('handler HTTP compartilha contrato da liturgia e encaminha refresh', async t => {
+  const calls = [];
+  const data = { date, title: 'Liturgia de teste' };
+  const url = await serveHandler(t, createLiturgyHandler(async options => { calls.push(options); return data; }));
+  const normal = await fetch(`${url}/api/liturgia`);
+  assert.equal(normal.status, 200);
+  assert.equal(normal.headers.get('cache-control'), 'no-store');
+  assert.deepEqual(await normal.json(), { success: true, data });
+  await fetch(`${url}/api/liturgia?refresh=1`);
+  assert.deepEqual(calls, [{ refresh: false }, { refresh: true }]);
+  const head = await fetch(`${url}/api/liturgia`, { method: 'HEAD' });
+  assert.equal(head.status, 200);
+  assert.equal(await head.text(), '');
+  const post = await fetch(`${url}/api/liturgia`, { method: 'POST' });
+  assert.equal(post.status, 405);
+  assert.equal(post.headers.get('allow'), 'GET, HEAD');
+});
+test('falha upstream retorna JSON 503 sem expor detalhes internos', async t => {
+  const url = await serveHandler(t, createLiturgyHandler(async () => { throw new Error('detalhe interno'); }, { error() {} }));
+  const response = await fetch(`${url}/api/liturgia`);
+  assert.equal(response.status, 503);
+  assert.equal(response.headers.get('cache-control'), 'no-store');
+  assert.equal(response.headers.get('retry-after'), '60');
+  assert.deepEqual(await response.json(), { success: false, error: 'Erro ao buscar liturgia' });
+});
+test('fallback da Vercel atende rotas React e preserva caminhos da API', async () => {
+  const config = JSON.parse(await readFile(new URL('../vercel.json', import.meta.url), 'utf8'));
+  const fallback = config.rewrites.find(rule => rule.destination === '/index.html');
+  const pattern = new RegExp(`^${fallback.source}$`);
+  for (const path of ['/liturgia', '/historia', '/sobre', '/curiosidades', '/curiosidade/1']) assert.ok(pattern.test(path));
+  for (const path of ['/api', '/api/liturgia', '/api/health', '/api/unknown']) assert.ok(!pattern.test(path));
+});

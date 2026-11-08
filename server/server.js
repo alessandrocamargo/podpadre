@@ -1,7 +1,7 @@
 // Servidor Express para fornecer a liturgia diária via API
 import express from "express";
 import cors from "cors";
-import { getCachedDailyLiturgy } from "./liturgyService.js";
+import { createLiturgyHandler, healthHandler } from "./httpHandlers.js";
 import { exampleLiturgyData } from "./exampleData.js";
 
 const app = express();
@@ -26,23 +26,7 @@ app.get("/", (req, res) => {
 });
 
 // Rota para obter a liturgia do dia
-app.get("/api/liturgia", async (req, res) => {
-  try {
-    console.log("📖 Buscando liturgia...");
-    const liturgy = await getCachedDailyLiturgy({ refresh: req.query.refresh === "1" });
-    console.log("✅ Liturgia obtida com sucesso");
-    res.json({
-      success: true,
-      data: liturgy,
-    });
-  } catch (error) {
-    console.error("❌ Erro na rota /api/liturgia:", error);
-    res.status(503).json({
-      success: false,
-      error: "Erro ao buscar liturgia",
-    });
-  }
-});
+app.get("/api/liturgia", createLiturgyHandler());
 
 // Rota para obter dados de exemplo
 app.get("/api/exemplo", (req, res) => {
@@ -54,12 +38,7 @@ app.get("/api/exemplo", (req, res) => {
 });
 
 // Rota de health check
-app.get("/api/health", (req, res) => {
-  res.json({
-    status: "ok",
-    timestamp: new Date().toISOString(),
-  });
-});
+app.get("/api/health", healthHandler);
 
 // Iniciar servidor
 app.listen(PORT, () => {
