@@ -97,27 +97,21 @@ const LiturgiaDiaria: React.FC = () => {
 
               <hr className="my-4" />
 
-              {liturgy.reading1 && (
-                <div className="liturgia-section mb-4">
-                  <h5 className="liturgia-section-title">📖 Primeira Leitura</h5>
-                  <p className="liturgia-text">{liturgy.reading1}</p>
-                </div>
+              {liturgy.notice && <Alert variant="info">{liturgy.notice} <a href="https://www.cnbb.org.br/liturgia-diaria/" target="_blank" rel="noreferrer">Conferir na CNBB</a></Alert>}
+              {liturgy.readings.some(reading => reading.mode === 'bible') && (
+                <p className="small text-muted">{liturgy.bible.notice} <a href={liturgy.bible.url} target="_blank" rel="noreferrer">Sobre a tradução</a></p>
               )}
-
-              {liturgy.psalm && <div className="liturgia-section mb-4"><h2 className="h5">Salmo Responsorial</h2><p className="liturgia-text">{liturgy.psalm}</p></div>}
-              {liturgy.reading2 && (
-                <div className="liturgia-section mb-4">
-                  <h5 className="liturgia-section-title">📖 Segunda Leitura</h5>
-                  <p className="liturgia-text">{liturgy.reading2}</p>
-                </div>
-              )}
-
-              {liturgy.gospel && (
-                <div className="liturgia-section">
-                  <h5 className="liturgia-section-title">✨ Evangelho</h5>
-                  <p className="liturgia-text">{liturgy.gospel}</p>
-                </div>
-              )}
+              {liturgy.readings.map(reading => (
+                <section key={reading.id} className="liturgia-section mb-4">
+                  <h2 className="h5 liturgia-section-title">{reading.label} — {reading.reference}</h2>
+                  {reading.title && <p className="fw-semibold">{reading.title}</p>}
+                  {reading.refrain && <p className="fw-semibold">Refrão: {reading.refrain}</p>}
+                  <p className="liturgia-text">{reading.text}</p>
+                  <p className="small text-muted">
+                    {reading.mode === 'bible' ? 'Texto bíblico para estudo' : 'Texto da fonte litúrgica'}: <a href={reading.sourceUrl} target="_blank" rel="noreferrer">{reading.source}</a>
+                  </p>
+                </section>
+              ))}
 
               <hr className="my-4" />
 

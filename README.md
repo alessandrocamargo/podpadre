@@ -21,10 +21,10 @@ Desenvolvido com React, TypeScript e Bootstrap, o site oferece uma experiência 
 
 | Tecnologia          | Uso                        |
 |---------------------|----------------------------|
-| React 18+           | Biblioteca UI              |
+| React 19           | Biblioteca UI              |
 | TypeScript          | Tipagem estática           |
 | Vite                | Build tool e dev server    |
-| React Router v6     | Roteamento                 |
+| React Router v7     | Roteamento                 |
 | Bootstrap 5         | Sistema de grid e componentes base |
 | React-Bootstrap     | Integração Bootstrap com React |
 | CSS Modules (opcional) | Estilização adicional   |
@@ -35,7 +35,7 @@ Desenvolvido com React, TypeScript e Bootstrap, o site oferece uma experiência 
 
 ### Pré-requisitos
 
-- Node.js (v16 ou superior)
+- Node.js (20.19+ ou 22.12+, incluindo versões posteriores compatíveis)
 - npm (v8 ou superior)
 
 ### Instalação
@@ -49,4 +49,38 @@ cd podpadre
 npm install
 
 # Inicie o servidor de desenvolvimento
-npm run dev
+npm run dev:all
+
+```
+
+
+## Liturgia diária: referências e texto bíblico
+
+O Express monta a liturgia em duas etapas: consulta as referências do dia e resolve as passagens em uma API bíblica. A data é calculada em `America/Sao_Paulo`.
+
+1. `server/liturgyReferences.js` tenta ler referências identificadas e datadas na página pública da CNBB. O visualizador atual carrega conteúdo externo, e sua API separada respondeu 403 no teste de integração; não há tentativa de contornar essa restrição.
+2. Sem referências verificáveis na página pública, consulta a [API Liturgia Diária v2](https://github.com/Dancrf/liturgia-diaria/blob/master/docs/v2/README.md), com dia, mês e ano explícitos. A data da resposta precisa coincidir. A interface identifica a fonte alternativa e informa que não houve confirmação automática na CNBB.
+3. `server/bibleService.js` consulta capítulos da [Free Use Bible API](https://bible.helloao.org/docs/pt/guide/getting-started.html), tradução `por_bsl` (Bíblia Portuguesa Mundial), e seleciona apenas os versículos da referência. Esta versão inclui os livros deuterocanônicos; é uma tradução em revisão, declarada em domínio público pelo provedor, e **não é a tradução oficial do lecionário da CNBB**. A interface mostra esse aviso e os créditos.
+4. Intervalos e listas de versículos do mesmo capítulo são suportados. Salmos responsoriais, partes de versículos (`a`, `b` etc.), referências entre capítulos, alternativas dentro de uma referência e livros com diferenças conhecidas de numeração preservam o texto da fonte litúrgica. Nunca são aproximados para um capítulo inteiro ou versículos completos. Falhas da API bíblica também preservam o texto litúrgico, se disponível; sem texto válido a API responde 503.
+
+Alternativas de leitura e leituras bíblicas adicionais são preservadas como itens separados. O modelo `readings` informa referência, texto, refrão, fonte e modo (`bible` ou `liturgy`) por item. Os campos anteriores (`reading1`, `psalm`, `reading2`, `gospel`) continuam disponíveis para a prévia da Home.
+
+O cache da liturgia dura o dia, na memória do servidor e no navegador; o botão Atualizar ignora ambos. Capítulos bíblicos são compartilhados entre consultas em um cache de até 100 entradas; falhas são removidas para permitir novas tentativas. Não há chave de API no frontend.
+
+### Verificar
+
+```sh
+npm test
+npm run lint
+npm run build
+# Integração real: requer acesso à internet e depende das fontes externas
+node scripts/check-liturgy.mjs
+# Ou uma data específica
+node scripts/check-liturgy.mjs 2026-11-07
+```
+
+Os testes locais usam respostas controladas e verificam datas, intervalos, conteúdo incompleto, alternativas, origem dos textos e recuperação de falhas. O script de integração imprime referências e metadados, sem armazenar a Bíblia no repositório.
+
+### Publicação
+
+O frontend usa `/api` por padrão; o Vite encaminha esse caminho ao Express na porta 3001 durante o desenvolvimento. Em produção, configure o encaminhamento de `/api` para o backend ou defina `VITE_API_URL` antes do build. A hospedagem precisa permitir requisições HTTPS de saída para CNBB, API Liturgia Diária e Free Use Bible API. O backend deve ser executado além do site estático. Consulte `.env.example`.

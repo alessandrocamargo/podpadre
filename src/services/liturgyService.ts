@@ -1,6 +1,6 @@
 import type { LiturgyData } from '../types/Liturgy';
 
-const CACHE_KEY = 'liturgy_cache_v2';
+const CACHE_KEY = 'liturgy_cache_v3';
 const API_BASE = (import.meta.env.VITE_API_URL || '/api').replace(/\/$/, '');
 export const getLiturgyDate = (date = new Date()): string =>
   new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit' }).format(date);
@@ -10,9 +10,20 @@ const isLiturgy = (value: unknown): value is LiturgyData => {
   const data = value as Record<string, unknown>;
   return data.date === getLiturgyDate() &&
     ['title', 'reading1', 'gospel', 'source', 'url', 'fetchedAt'].every(key => typeof data[key] === 'string' && (data[key] as string).trim().length > 0) &&
-    (data.reading1 as string).length >= 80 && (data.gospel as string).length >= 80 &&
+    (data.reading1 as string).trim().length > 0 && (data.gospel as string).trim().length > 0 &&
     (data.reading2 === undefined || typeof data.reading2 === 'string') &&
-    (data.psalm === undefined || typeof data.psalm === 'string');
+    (data.psalm === undefined || typeof data.psalm === 'string') &&
+    typeof data.verifiedWithCNBB === 'boolean' &&
+    (data.notice === undefined || typeof data.notice === 'string') &&
+    !!data.bible && typeof data.bible === 'object' &&
+    ['name', 'url', 'notice'].every(key => typeof (data.bible as Record<string, unknown>)[key] === 'string') &&
+    Array.isArray(data.readings) && data.readings.length > 0 && data.readings.every(item =>
+      item && typeof item === 'object' &&
+      ['id', 'label', 'reference', 'title', 'text', 'source', 'sourceUrl'].every(key => typeof item[key] === 'string') &&
+      item.text.trim().length > 0 && ['reading1', 'reading2', 'psalm', 'extra', 'gospel'].includes(item.kind) &&
+      ['bible', 'liturgy'].includes(item.mode) &&
+      (item.refrain === undefined || typeof item.refrain === 'string'));
+
 };
 
 export const clearLiturgyCache = (): void => {
@@ -27,7 +38,7 @@ async function loadLiturgy(refresh = false): Promise<LiturgyData> {
     } catch { clearLiturgyCache(); }
   }
   const response = await fetch(`${API_BASE}/liturgia${refresh ? '?refresh=1' : ''}`, {
-    signal: AbortSignal.timeout(15000), cache: 'no-store',
+    signal: AbortSignal.timeout(45000), cache: 'no-store',
   });
   if (!response.ok) throw new Error('Liturgia indisponível. Tente novamente em alguns instantes.');
   const payload = await response.json();

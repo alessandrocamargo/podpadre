@@ -242,6 +242,9 @@ const Home: React.FC = () => {
                 <div className="liturgy-preview-header">
                   <h3>{liturgy.title}</h3>
                   <p className="text-muted mb-0">{liturgy.date}</p>
+                  <p className="small text-muted mt-2">Referências: {liturgy.source}.</p>
+                  {liturgy.notice && <p className="small">{liturgy.notice}</p>}
+                  {liturgy.readings.some(reading => reading.mode === 'bible') && <p className="small">{liturgy.bible.name}. {liturgy.bible.notice}</p>}
                 </div>
 
                 <div className="liturgy-sections">
@@ -269,7 +272,7 @@ const Home: React.FC = () => {
 
                 <div className="liturgy-preview-footer">
                   <Link to="/liturgia" className="btn btn-primary btn-lg">
-                    Leia a Liturgia Completa →
+                    Ver todas as leituras →
                   </Link>
                 </div>
               </div>

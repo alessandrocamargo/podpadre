@@ -1,7 +1,7 @@
 // Servidor Express para fornecer a liturgia diária via API
 import express from "express";
 import cors from "cors";
-import { getCachedOrFreshLiturgy } from "./scrapeCNBB.js";
+import { getCachedDailyLiturgy } from "./liturgyService.js";
 import { exampleLiturgyData } from "./exampleData.js";
 
 const app = express();
@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
 app.get("/api/liturgia", async (req, res) => {
   try {
     console.log("📖 Buscando liturgia...");
-    const liturgy = await getCachedOrFreshLiturgy({ refresh: req.query.refresh === "1" });
+    const liturgy = await getCachedDailyLiturgy({ refresh: req.query.refresh === "1" });
     console.log("✅ Liturgia obtida com sucesso");
     res.json({
       success: true,
